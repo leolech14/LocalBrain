@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "identifier": "com.localbrain.desktop",
   "productName": "LocalBrain",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "build": {
     "beforeBuildCommand": "pnpm build",
     "beforeDevCommand": "pnpm dev",
@@ -56,7 +56,7 @@
       "providerShortName": null,
       "signingIdentity": null,
       "dmg": {
-        "background": null,
+        "background": "icons/dmg-background.png",
         "windowSize": {
           "width": 600,
           "height": 400

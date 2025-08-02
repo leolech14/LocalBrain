@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAppStore } from '../../stores/appStore'
 import { invoke } from '@tauri-apps/api/core'
-import { Mic, MicOff } from 'lucide-react'
 
 interface AudioBuffer {
   data: Float32Array
@@ -80,9 +79,7 @@ export function WakeWordDetector() {
       setIsListening(true)
       setDetectionStatus('listening')
       
-      console.log('Wake word detection started')
     } catch (error) {
-      console.error('Failed to start wake word detection:', error)
       setDetectionStatus('idle')
     }
   }
@@ -198,7 +195,6 @@ export function WakeWordDetector() {
         sampleRate: SAMPLE_RATE
       })
       
-      console.log('Transcription result:', result.text)
       
       // Check if transcription contains wake word
       const transcription = result.text.toLowerCase().trim()
@@ -208,14 +204,12 @@ export function WakeWordDetector() {
         handleWakeWordDetected()
       }
     } catch (error) {
-      console.error('Wake word transcription failed:', error)
     }
   }
   
   // Remove the old analyzeAudioPattern function - we're using real transcription now
   
   const handleWakeWordDetected = async () => {
-    console.log('Wake word detected!')
     lastDetectionRef.current = Date.now()
     setDetectionStatus('detected')
     
@@ -237,7 +231,6 @@ export function WakeWordDetector() {
     try {
       await startVoiceSession({ mode: 'realtime' })
     } catch (error) {
-      console.error('Failed to start realtime voice session:', error)
     }
     
     // Reset status after animation

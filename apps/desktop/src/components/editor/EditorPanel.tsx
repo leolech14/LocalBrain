@@ -94,10 +94,8 @@ export function EditorPanel() {
         setTabs([...tabs, newTab])
         setActiveTabId(newTab.id)
       } else {
-        console.error('Failed to read file:', response.error)
       }
     } catch (error) {
-      console.error('Failed to open file:', error)
     }
   }
   
@@ -149,10 +147,8 @@ export function EditorPanel() {
         ))
         // File saved successfully
       } else {
-        console.error('Failed to save file:', response.error)
       }
     } catch (error) {
-      console.error('Failed to save file:', error)
     }
   }
   

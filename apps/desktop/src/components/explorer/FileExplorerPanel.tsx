@@ -84,7 +84,6 @@ export function FileExplorerPanel() {
         }))
       }
     } catch (error) {
-      console.error('Failed to load directory:', error)
     }
   }
   
@@ -149,7 +148,6 @@ export function FileExplorerPanel() {
         await loadGitStatus(node.path)
       }
     } catch (error) {
-      console.error('Failed to load subdirectory:', error)
     }
   }
   
@@ -289,7 +287,6 @@ export function FileExplorerPanel() {
         await loadDirectory(currentPath)
         await loadGitStatus(currentPath)
       } catch (error) {
-        console.error('Failed to delete file:', error)
       }
     }
   }

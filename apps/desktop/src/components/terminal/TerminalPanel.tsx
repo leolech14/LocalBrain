@@ -88,33 +88,27 @@ export function TerminalPanel() {
         
         // Handle terminal input
         terminal.onData(async (data) => {
-          console.log('Sending terminal input:', data, 'to session:', activeTab.sessionId)
           try {
             await invoke('terminal_send_input', {
               sessionId: activeTab.sessionId,
               input: data
             })
           } catch (error) {
-            console.error('Failed to send terminal input:', error)
           }
         })
         
         // Listen for terminal output - using async/await for better error handling
         const setupListener = async () => {
           try {
-            console.log('Setting up listener for:', `terminal-output-${activeTab.sessionId}`)
             const unlisten = await listen<string>(`terminal-output-${activeTab.sessionId}`, (event) => {
-              console.log('Received terminal output:', event.payload)
               if (terminal) {
                 terminal.write(event.payload)
               }
               appendTerminalOutput(event.payload)
             })
             
-            console.log('Listener setup complete')
             unlistenersRef.current.set(activeTabId, unlisten)
           } catch (err) {
-            console.error('Failed to setup listener:', err)
           }
         }
         
@@ -174,7 +168,6 @@ export function TerminalPanel() {
   }, [activeTabId, tabs])
   
   const createNewTab = async () => {
-    console.log('createNewTab called, current tabs:', tabs.length)
     try {
       // Create backend terminal session
       const response = await invoke<{
@@ -188,15 +181,12 @@ export function TerminalPanel() {
         }
       })
       
-      console.log('Create terminal response:', response)
       
       if (!response.success || !response.data) {
-        console.error('Failed to create terminal:', response.error)
         return
       }
       
       const sessionId = response.data
-      console.log('Terminal session ID:', sessionId)
       const id = Date.now().toString()
       
       const newTab: Tab = {
@@ -208,7 +198,6 @@ export function TerminalPanel() {
       setTabs([...tabs, newTab])
       setActiveTabId(id)
     } catch (error) {
-      console.error('Failed to create terminal:', error)
     }
   }
   
@@ -220,7 +209,6 @@ export function TerminalPanel() {
     try {
       await invoke('close_terminal', { terminalId: tab.sessionId })
     } catch (error) {
-      console.error('Failed to close terminal:', error)
     }
     
     // Cleanup terminal

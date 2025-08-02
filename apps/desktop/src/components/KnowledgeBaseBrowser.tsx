@@ -79,7 +79,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         setItems(response.data);
       }
     } catch (error) {
-      console.error('Failed to load knowledge items:', error);
     }
   };
   
@@ -90,7 +89,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         setStorageInfo(response.data);
       }
     } catch (error) {
-      console.error('Failed to load storage info:', error);
     }
   };
   
@@ -101,7 +99,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         setItemContent(response.data);
       }
     } catch (error) {
-      console.error('Failed to load item content:', error);
       setItemContent(null);
     }
   };
@@ -119,7 +116,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         await loadItems();
       }
     } catch (error) {
-      console.error('Failed to create folder:', error);
     }
   };
   
@@ -143,7 +139,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
           await loadStorageInfo();
         }
       } catch (error) {
-        console.error('Failed to upload file:', error);
       } finally {
         setIsUploading(false);
       }
@@ -165,7 +160,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error('Failed to delete item:', error);
     }
   };
   
@@ -176,7 +170,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         await loadItems();
       }
     } catch (error) {
-      console.error('Failed to toggle star:', error);
     }
   };
   
@@ -187,7 +180,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         await loadItems();
       }
     } catch (error) {
-      console.error('Failed to toggle private:', error);
     }
   };
   
@@ -198,7 +190,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         await loadItems();
       }
     } catch (error) {
-      console.error('Failed to vectorize item:', error);
     }
   };
   
@@ -209,7 +200,6 @@ export const KnowledgeBaseBrowser: React.FC = () => {
         await loadItems();
       }
     } catch (error) {
-      console.error('Failed to update tags:', error);
     }
   };
 

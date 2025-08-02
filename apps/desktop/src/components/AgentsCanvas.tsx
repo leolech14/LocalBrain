@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Plus, Trash2, Settings, Link2, GitBranch, Cpu, Zap, Eye, Save, FolderOpen } from 'lucide-react';
+import { Play, Pause, Plus, GitBranch, Cpu, Zap, Eye, Save } from 'lucide-react';
 import { Editor } from '@monaco-editor/react';
 import { invoke } from '@tauri-apps/api/core';
 import { ApiResponse } from '../types';
@@ -10,7 +10,7 @@ interface AgentNode {
   agent_type: 'input' | 'processor' | 'output' | 'condition' | 'transform' | 'storage';
   x: number;
   y: number;
-  config: any;
+  config: Record<string, unknown>;
   status: 'idle' | 'running' | 'success' | 'error' | 'disabled';
   created_at: string;
   updated_at: string;
@@ -43,7 +43,7 @@ export const AgentsCanvas: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [draggedAgent, setDraggedAgent] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
+  // const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
   const [leftPanelWidth, setLeftPanelWidth] = useState(192); // w-48 = 192px
   const [rightPanelWidth, setRightPanelWidth] = useState(320); // w-80 = 320px
   const canvasRef = useRef<SVGSVGElement>(null);
@@ -51,6 +51,7 @@ export const AgentsCanvas: React.FC = () => {
   useEffect(() => {
     loadWorkflows();
     loadAvailableAgents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadWorkflows = async () => {
@@ -63,7 +64,6 @@ export const AgentsCanvas: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error('Failed to load workflows:', error);
     }
   };
 
@@ -74,7 +74,6 @@ export const AgentsCanvas: React.FC = () => {
         setAvailableAgents(response.data);
       }
     } catch (error) {
-      console.error('Failed to load available agents:', error);
     }
   };
 
@@ -94,7 +93,6 @@ export const AgentsCanvas: React.FC = () => {
         await loadWorkflows();
       }
     } catch (error) {
-      console.error('Failed to create workflow:', error);
     }
   };
 
@@ -110,7 +108,6 @@ export const AgentsCanvas: React.FC = () => {
         // Workflow saved successfully
       }
     } catch (error) {
-      console.error('Failed to save workflow:', error);
     }
   };
 
@@ -120,7 +117,7 @@ export const AgentsCanvas: React.FC = () => {
     setIsRunning(true);
     
     try {
-      const response = await invoke<ApiResponse<any>>('execute_agent_workflow', {
+      const response = await invoke<ApiResponse<unknown>>('execute_agent_workflow', {
         workflowId: currentWorkflow.id,
         input: { test: true }
       });
@@ -158,7 +155,6 @@ export const AgentsCanvas: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error('Failed to run workflow:', error);
     } finally {
       setTimeout(() => {
         setIsRunning(false);

@@ -149,7 +149,6 @@ Always confirm before executing potentially destructive operations.`,
       })
       
     } catch (err) {
-      console.error('Failed to initialize realtime session:', err)
       setError(err instanceof Error ? err.message : 'Failed to connect')
       setIsConnecting(false)
       stopVoiceSession()
@@ -193,7 +192,6 @@ Always confirm before executing potentially destructive operations.`,
     
     // Listen for tool executions
     const toolUnlisten = await listen('tool-executed', (event) => {
-      console.log('Tool executed:', event.payload)
     })
     eventUnsubscribersRef.current.push(toolUnlisten)
     
@@ -222,7 +220,6 @@ Always confirm before executing potentially destructive operations.`,
     
     // Listen for errors
     const errorUnlisten = await listen(`realtime-error-${sessionId}`, (event) => {
-      console.error('Realtime error:', event.payload)
       setError('Connection error')
     })
     eventUnsubscribersRef.current.push(errorUnlisten)
@@ -299,7 +296,6 @@ Always confirm before executing potentially destructive operations.`,
       }
       
     } catch (err) {
-      console.error('Failed to start audio capture:', err)
       setError('Microphone access denied')
       throw err
     }

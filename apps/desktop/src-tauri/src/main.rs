@@ -2,8 +2,11 @@
 
 mod commands;
 mod database;
+mod encrypted_database;
 mod voice;
+mod voice_system;
 mod terminal;
+mod enhanced_security;
 mod ollama;
 mod git;
 mod whisper;
@@ -95,7 +98,13 @@ fn main() {
             send_realtime_audio,
             wake_up_realtime_session,
             close_realtime_session,
-            get_available_tools
+            get_available_tools,
+            voice_system::commands::voice_create_session,
+            voice_system::commands::voice_stop_session,
+            voice_system::commands::enhanced_voice_add_audio_chunk,
+            voice_system::commands::voice_speak_text,
+            voice_system::commands::voice_end_conversation,
+            voice_system::commands::enhanced_transcribe_audio
         ])
         .setup(|app| {
             let app_handle = app.handle();
@@ -122,6 +131,22 @@ fn main() {
             tauri::async_runtime::spawn(async move {
                 if let Err(e) = voice::initialize_voice_manager(voice_handle).await {
                     eprintln!("Failed to initialize voice manager: {}", e);
+                }
+            });
+            
+            // Initialize enhanced voice system
+            let enhanced_voice_handle = app_handle.clone();
+            let enhanced_voice_manager = std::sync::Arc::new(tokio::sync::Mutex::new(
+                voice_system::EnhancedVoiceManager::new(enhanced_voice_handle)
+            ));
+            app.manage(enhanced_voice_manager.clone());
+            
+            // Initialize local models for voice system
+            let voice_manager_clone = enhanced_voice_manager.clone();
+            tauri::async_runtime::spawn(async move {
+                let mut manager = voice_manager_clone.lock().await;
+                if let Err(e) = manager.initialize_local_models().await {
+                    eprintln!("Failed to initialize local voice models: {}", e);
                 }
             });
             

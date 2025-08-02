@@ -36,7 +36,6 @@ export const ContextManager: React.FC = () => {
         setContexts(response.data);
       }
     } catch (error) {
-      console.error('Failed to load contexts:', error);
     }
   };
 
@@ -57,7 +56,6 @@ export const ContextManager: React.FC = () => {
       setNewContextContent('');
       await loadContexts();
     } catch (error) {
-      console.error('Failed to save context:', error);
     }
   };
 
@@ -68,7 +66,6 @@ export const ContextManager: React.FC = () => {
         setSelectedContext(response.data);
       }
     } catch (error) {
-      console.error('Failed to load context:', error);
     }
   };
 
@@ -82,7 +79,6 @@ export const ContextManager: React.FC = () => {
       }
       await loadContexts();
     } catch (error) {
-      console.error('Failed to delete context:', error);
     }
   };
 

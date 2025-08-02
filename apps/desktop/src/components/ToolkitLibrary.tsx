@@ -68,7 +68,6 @@ export const ToolkitLibrary: React.FC = () => {
         setTools(response.data);
       }
     } catch (error) {
-      console.error('Failed to load tools:', error);
     }
   };
   
@@ -99,7 +98,6 @@ export const ToolkitLibrary: React.FC = () => {
         ]);
       }
     } catch (error) {
-      console.error('Failed to load categories:', error);
     }
   };
 
@@ -129,10 +127,8 @@ export const ToolkitLibrary: React.FC = () => {
           }
         }
       } else {
-        console.error('Failed to install tool:', response.error);
       }
     } catch (error) {
-      console.error('Failed to install tool:', error);
     } finally {
       setIsInstalling(false);
     }
@@ -151,10 +147,8 @@ export const ToolkitLibrary: React.FC = () => {
           }
         }
       } else {
-        console.error('Failed to uninstall tool:', response.error);
       }
     } catch (error) {
-      console.error('Failed to uninstall tool:', error);
     } finally {
       setIsInstalling(false);
     }
@@ -173,10 +167,8 @@ export const ToolkitLibrary: React.FC = () => {
       if (response.success && response.data) {
         setExecutionResult(response.data);
       } else {
-        console.error('Failed to execute tool:', response.error);
       }
     } catch (error) {
-      console.error('Failed to execute tool:', error);
     } finally {
       setIsExecuting(false);
     }
@@ -190,7 +182,6 @@ export const ToolkitLibrary: React.FC = () => {
           setTools(response.data);
         }
       } catch (error) {
-        console.error('Failed to search tools:', error);
       }
     } else {
       await loadTools(selectedCategory === 'All' ? undefined : selectedCategory);

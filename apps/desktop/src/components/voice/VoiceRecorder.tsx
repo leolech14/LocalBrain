@@ -110,7 +110,6 @@ export function VoiceRecorder() {
       }
     } catch (error) {
       toast.error('Failed to access microphone')
-      console.error(error)
     }
   }
 
@@ -165,7 +164,6 @@ export function VoiceRecorder() {
         const audio = new Audio(audioUrl)
         
         audio.play().catch(e => {
-          console.error('Failed to play audio:', e)
         })
         
         // Clean up
@@ -173,10 +171,8 @@ export function VoiceRecorder() {
           URL.revokeObjectURL(audioUrl)
         }
       } else {
-        console.error('TTS error:', response.error)
       }
     } catch (error) {
-      console.error('Failed to speak text:', error)
     }
   }
 

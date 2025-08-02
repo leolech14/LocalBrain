@@ -189,7 +189,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         throw new Error('Failed to get settings')
       }
     } catch (error) {
-      console.error('Failed to initialize app:', error)
       set({
         error: error instanceof Error ? error.message : 'Failed to initialize app',
         isLoading: false,
@@ -220,7 +219,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         throw new Error(response.error || 'Failed to update settings')
       }
     } catch (error) {
-      console.error('Failed to update settings:', error)
       set({ error: error instanceof Error ? error.message : 'Failed to update settings' })
     }
   },
@@ -262,7 +260,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         throw new Error(response.error || 'Failed to start voice session')
       }
     } catch (error) {
-      console.error('Failed to start voice session:', error)
       set({ error: error instanceof Error ? error.message : 'Failed to start voice session' })
     }
   },
@@ -287,7 +284,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         throw new Error(response.error || 'Failed to stop voice session')
       }
     } catch (error) {
-      console.error('Failed to stop voice session:', error)
       set({ error: error instanceof Error ? error.message : 'Failed to stop voice session' })
     }
   },
@@ -303,7 +299,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         throw new Error(response.error || 'Failed to speak text')
       }
     } catch (error) {
-      console.error('Failed to speak text:', error)
       set({ error: error instanceof Error ? error.message : 'Failed to speak text' })
     }
   },
@@ -325,7 +320,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         throw new Error(response.error || 'Failed to create terminal')
       }
     } catch (error) {
-      console.error('Failed to create terminal:', error)
       set({ error: error instanceof Error ? error.message : 'Failed to create terminal' })
       throw error
     }
@@ -346,7 +340,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         throw new Error(response.error || 'Failed to close terminal')
       }
     } catch (error) {
-      console.error('Failed to close terminal:', error)
       set({ error: error instanceof Error ? error.message : 'Failed to close terminal' })
     }
   },
@@ -434,7 +427,6 @@ ${recentTerminalOutput}`
         throw new Error('Failed to send message')
       }
     } catch (error) {
-      console.error('Failed to send message:', error)
       
       const errorMessage = {
         id: (Date.now() + 2).toString(),
@@ -484,7 +476,6 @@ ${recentTerminalOutput}`
         throw new Error(response.error || 'Failed to delete file')
       }
     } catch (error) {
-      console.error('Failed to delete file:', error)
       set({ error: error instanceof Error ? error.message : 'Failed to delete file' })
       throw error
     }

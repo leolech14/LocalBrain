@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react'
 import ReactFlow, {
-  Node,
-  Edge,
   addEdge,
   Background,
   Controls,

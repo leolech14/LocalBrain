@@ -129,7 +129,6 @@ export function ChatPanel() {
         }
         mediaRecorder.start(1000)
       } catch (error) {
-        console.error('Error accessing microphone:', error)
         alert('Unable to access microphone. Please check your permissions.')
       }
     }
