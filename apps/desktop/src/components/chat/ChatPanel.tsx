@@ -20,7 +20,7 @@ interface Message {
 }
 
 export function ChatPanel() {
-  const { settings, messages, sendMessage, startVoiceSession, stopVoiceSession, isListening } = useAppStore()
+  const { settings, messages, sendMessage, startVoiceSession, stopVoiceSession, isListening, isVoiceActive } = useAppStore()
   const { voice_enabled: voiceEnabled } = settings
   const [input, setInput] = useState('')
   const [audioStream, setAudioStream] = useState<MediaStream | undefined>()
@@ -140,6 +140,15 @@ return (
       {/* Header */}
       <div className="px-3 py-1.5 border-b border-gray-900">
         <h2 className="text-sm font-semibold">Chat</h2>
+        {/* Voice Status */}
+        {voiceEnabled && !isVoiceActive && (
+          <div className="flex items-center space-x-1 mt-1">
+            <Mic className="w-3 h-3 text-cyan-400 animate-pulse" />
+            <span className="text-xs text-gray-400">
+              Say "Hey Brain" to activate
+            </span>
+          </div>
+        )}
       </div>
       
       {/* Messages */}

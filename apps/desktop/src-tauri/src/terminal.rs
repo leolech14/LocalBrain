@@ -99,7 +99,7 @@ impl TerminalManager {
         let sessions = self.sessions.clone();
         
         tokio::spawn(async move {
-            let mut master = pty_pair.master;
+            let master = pty_pair.master;
             
             // Get writer before spawning tasks
             let mut writer = master.take_writer()?;

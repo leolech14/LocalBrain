@@ -13,9 +13,14 @@ mod agents;
 mod tools;
 mod knowledge;
 mod config;
+mod state;
+mod security;
+mod realtime_voice;
+mod tool_executor;
 
 use commands::*;
 use tauri::Manager;
+use std::sync::Arc;
 
 fn main() {
     // Load .env file if it exists
@@ -85,7 +90,12 @@ fn main() {
             toggle_knowledge_private,
             vectorize_knowledge_item,
             search_similar_knowledge,
-            get_knowledge_storage_info
+            get_knowledge_storage_info,
+            create_realtime_session,
+            send_realtime_audio,
+            wake_up_realtime_session,
+            close_realtime_session,
+            get_available_tools
         ])
         .setup(|app| {
             let app_handle = app.handle();
@@ -151,6 +161,39 @@ fn main() {
             tauri::async_runtime::spawn(async move {
                 if let Err(e) = knowledge::initialize_knowledge_manager(knowledge_dir).await {
                     eprintln!("Failed to initialize knowledge manager: {}", e);
+                }
+            });
+            
+            // Initialize realtime voice manager
+            realtime_voice::init_realtime_manager(app_handle.clone());
+            
+            // Initialize tool registry with built-in tools
+            let allowed_roots = {
+                let state_manager = app_handle.state::<AppStateManager>();
+                let state = state_manager.state.lock().unwrap();
+                state.settings.allowed_roots.clone()
+            };
+            let security_manager = Arc::new(security::SecurityManager::new());
+            tauri::async_runtime::spawn(async move {
+                use std::sync::Arc;
+                use crate::tool_executor::{FileSystemTool, TerminalTool, MCPBridgeTool};
+                
+                let registry_result = realtime_voice::with_realtime_manager(|manager| {
+                    let registry = manager.tool_registry.clone();
+                    Box::pin(async move { Ok(registry) })
+                }).await;
+                
+                if let Ok(registry) = registry_result {
+                    // Register built-in tools
+                    let fs_tool = Arc::new(FileSystemTool::new(allowed_roots));
+                    let term_tool = Arc::new(TerminalTool::new(security_manager));
+                    let mcp_tool = Arc::new(MCPBridgeTool::new());
+                    
+                    registry.register(fs_tool).await;
+                    registry.register(term_tool).await;
+                    registry.register(mcp_tool).await;
+                    
+                    println!("Tool registry initialized with {} tools", registry.list().await.len());
                 }
             });
             

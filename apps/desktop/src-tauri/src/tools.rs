@@ -55,7 +55,7 @@ impl ToolsManager {
         // Create tools directory if it doesn't exist
         std::fs::create_dir_all(&tools_dir)?;
         
-        let mut manager = Self {
+        let manager = Self {
             tools: Arc::new(RwLock::new(HashMap::new())),
             tools_dir,
         };

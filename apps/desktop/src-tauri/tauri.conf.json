@@ -54,7 +54,22 @@
       "frameworks": [],
       "minimumSystemVersion": "10.13",
       "providerShortName": null,
-      "signingIdentity": null
+      "signingIdentity": null,
+      "dmg": {
+        "background": null,
+        "windowSize": {
+          "width": 600,
+          "height": 400
+        },
+        "appPosition": {
+          "x": 180,
+          "y": 170
+        },
+        "applicationFolderPosition": {
+          "x": 420,
+          "y": 170
+        }
+      }
     },
     "shortDescription": "AI-powered local environment command center",
     "longDescription": "LocalBrain is a privacy-first macOS desktop application that gives power-users voice, chat and graphical control over their computer."

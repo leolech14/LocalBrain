@@ -29,6 +29,7 @@ interface AppSettings {
     wake_word: string
     voice_model: string
     response_voice: string
+    tts_voice?: string
     auto_speak_responses: boolean
     noise_suppression: boolean
   }
@@ -90,6 +91,7 @@ interface AppState {
   
   // Chat actions
   sendMessage: (content: string) => Promise<void>
+  addChatMessage: (message: Omit<AppState['messages'][0], 'id' | 'timestamp'> & { timestamp?: Date }) => void
   clearChat: () => void
   
   // File explorer actions
@@ -233,6 +235,18 @@ export const useAppStore = create<AppState>((set, get) => ({
   
   // Voice actions
   startVoiceSession: async (config = {}) => {
+    // For realtime mode, just update the state
+    // The RealtimeVoiceSession component will handle the actual session creation
+    if (config.mode === 'realtime') {
+      set({
+        isVoiceActive: true,
+        isListening: false, // Will be set by the realtime component
+        voiceSessionId: null, // Will be set by the realtime component
+      })
+      return
+    }
+    
+    // For other modes, use the existing flow
     try {
       const response = await invoke<{success: boolean, data?: string, error?: string}>('start_voice_session', {
         config
@@ -433,6 +447,17 @@ ${recentTerminalOutput}`
         messages: [...state.messages, errorMessage]
       }))
     }
+  },
+  
+  addChatMessage: (message) => {
+    const newMessage = {
+      ...message,
+      id: Date.now().toString(),
+      timestamp: message.timestamp || new Date(),
+    }
+    set(state => ({
+      messages: [...state.messages, newMessage]
+    }))
   },
   
   clearChat: () => {

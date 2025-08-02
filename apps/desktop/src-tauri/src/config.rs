@@ -47,7 +47,7 @@ impl Default for Config {
             default_openai_model: env::var("DEFAULT_OPENAI_MODEL")
                 .unwrap_or_else(|_| "gpt-4o".to_string()),
             default_openai_chat_model: env::var("DEFAULT_OPENAI_CHAT_MODEL")
-                .unwrap_or_else(|_| "o3".to_string()), // User requested o3 model
+                .unwrap_or_else(|_| "gpt-4o".to_string()), // Use gpt-4o for chat
             default_ollama_model: env::var("DEFAULT_OLLAMA_MODEL")
                 .unwrap_or_else(|_| "llama3:8b".to_string()),
             default_tts_voice: env::var("DEFAULT_TTS_VOICE")

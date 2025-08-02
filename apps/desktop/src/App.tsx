@@ -11,6 +11,8 @@ import { AgentsCanvas } from './components/AgentsCanvas'
 import { ToolkitLibrary } from './components/ToolkitLibrary'
 import { KnowledgeBaseBrowser } from './components/KnowledgeBaseBrowser'
 import { Settings } from './components/settings/Settings'
+import { WakeWordDetector } from './components/voice/WakeWordDetector'
+import { RealtimeVoiceSession } from './components/voice/RealtimeVoiceSession'
 import { useAppStore } from './stores/appStore'
 import './App.css'
 
@@ -28,6 +30,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <div className={`app ${darkMode ? 'dark' : ''}`}>
+          <WakeWordDetector />
+          <RealtimeVoiceSession />
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<ChatView />} />

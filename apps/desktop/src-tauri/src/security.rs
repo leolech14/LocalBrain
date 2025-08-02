@@ -167,7 +167,7 @@ impl SecurityManager {
         }
         
         // Check file size limits if it's a new file
-        if let Some(settings) = &self.settings {
+        if let Some(_settings) = &self.settings {
             // This would check file size against settings.max_file_size_mb
             // For now, just return true
         }
@@ -346,7 +346,7 @@ impl AuditLogger {
             return;
         }
         
-        let event = AuditEvent {
+        let _event = AuditEvent {
             id: Uuid::new_v4().to_string(),
             timestamp: chrono::Utc::now(),
             action: action.to_string(),
@@ -368,7 +368,7 @@ impl AuditLogger {
             return;
         }
         
-        let event = AuditEvent {
+        let _event = AuditEvent {
             id: Uuid::new_v4().to_string(),
             timestamp: chrono::Utc::now(),
             action: action.to_string(),
@@ -382,7 +382,7 @@ impl AuditLogger {
         println!("SECURITY: {} - {}", action, details);
     }
     
-    pub async fn get_audit_log(&self, limit: Option<i64>) -> Result<Vec<AuditEvent>, Box<dyn std::error::Error>> {
+    pub async fn get_audit_log(&self, _limit: Option<i64>) -> Result<Vec<AuditEvent>, Box<dyn std::error::Error>> {
         // TODO: Implement when database is connected
         Ok(vec![])
     }

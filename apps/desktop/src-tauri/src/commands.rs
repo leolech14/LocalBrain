@@ -1209,3 +1209,89 @@ pub async fn transcribe_audio(audio_data: String, state: State<'_, AppStateManag
 pub fn greet(name: &str) -> String {
     format!("Hello, {}! Welcome to LocalBrain.", name)
 }
+
+// Realtime Voice Commands
+#[tauri::command]
+pub async fn create_realtime_session(
+    config: crate::realtime_voice::RealtimeConfig,
+) -> Result<ApiResponse<String>, String> {
+    let result = crate::realtime_voice::with_realtime_manager(|manager| {
+        let config = config.clone();
+        Box::pin(async move {
+            manager.create_session(config).await
+        })
+    }).await;
+    
+    match result {
+        Ok(session_id) => Ok(ApiResponse::success(session_id)),
+        Err(e) => Ok(ApiResponse::error(e.to_string())),
+    }
+}
+
+#[tauri::command]
+pub async fn send_realtime_audio(
+    session_id: String,
+    audio_data: Vec<u8>,
+) -> Result<ApiResponse<()>, String> {
+    let result = crate::realtime_voice::with_realtime_manager(|manager| {
+        let session_id = session_id.clone();
+        let audio_data = audio_data.clone();
+        Box::pin(async move {
+            manager.send_audio(&session_id, audio_data).await
+        })
+    }).await;
+    
+    match result {
+        Ok(()) => Ok(ApiResponse::success(())),
+        Err(e) => Ok(ApiResponse::error(e.to_string())),
+    }
+}
+
+#[tauri::command]
+pub async fn wake_up_realtime_session(
+    session_id: String,
+) -> Result<ApiResponse<()>, String> {
+    let result = crate::realtime_voice::with_realtime_manager(|manager| {
+        let session_id = session_id.clone();
+        Box::pin(async move {
+            manager.wake_up(&session_id).await
+        })
+    }).await;
+    
+    match result {
+        Ok(()) => Ok(ApiResponse::success(())),
+        Err(e) => Ok(ApiResponse::error(e.to_string())),
+    }
+}
+
+#[tauri::command]
+pub async fn close_realtime_session(
+    session_id: String,
+) -> Result<ApiResponse<()>, String> {
+    let result = crate::realtime_voice::with_realtime_manager(|manager| {
+        let session_id = session_id.clone();
+        Box::pin(async move {
+            manager.close_session(&session_id).await
+        })
+    }).await;
+    
+    match result {
+        Ok(()) => Ok(ApiResponse::success(())),
+        Err(e) => Ok(ApiResponse::error(e.to_string())),
+    }
+}
+
+#[tauri::command]
+pub async fn get_available_tools() -> Result<ApiResponse<Vec<serde_json::Value>>, String> {
+    let result = crate::realtime_voice::with_realtime_manager(|manager| {
+        let registry = manager.tool_registry.clone();
+        Box::pin(async move {
+            Ok(registry.get_tool_definitions().await)
+        })
+    }).await;
+    
+    match result {
+        Ok(tools) => Ok(ApiResponse::success(tools)),
+        Err(e) => Ok(ApiResponse::error(e.to_string())),
+    }
+}

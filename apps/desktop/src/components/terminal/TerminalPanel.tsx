@@ -5,6 +5,7 @@ import { FitAddon } from 'xterm-addon-fit'
 import { WebLinksAddon } from 'xterm-addon-web-links'
 import { invoke } from '@tauri-apps/api/core'
 import { listen } from '@tauri-apps/api/event'
+import { useAppStore } from '../../stores/appStore'
 import 'xterm/css/xterm.css'
 
 interface Tab {
@@ -81,7 +82,6 @@ export function TerminalPanel() {
           if (terminal) {
             terminal.write('Terminal initialized...\r\n')
           }
-              appendTerminalOutput(event.payload)
         }, 100)
         
         fitAddonsRef.current.set(activeTabId, fitAddon)
